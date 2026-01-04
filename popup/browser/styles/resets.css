@@ -1,0 +1,132 @@
+:root {
+  /* ===== Spacing System (8px base unit) ===== */
+  --space-xs:  0.25rem;   /* 4px */
+  --space-sm:  0.5rem;    /* 8px */
+  --space-md:  1rem;      /* 16px */
+  --space-lg:  1.5rem;    /* 24px */
+  --space-xl:  2rem;      /* 32px */
+  --space-2xl: 2.5rem;    /* 40px */
+
+  /* ===== Other Units ===== */
+  --border-radius: 0.35rem; /* 6px */
+
+  /* ===== Main color ===== */
+  --main-color: hsl(221deg, 83%, 53%);
+
+  /* ===== Hues and saturation ===== */
+  --theme-h: 221; /* blue */
+  --theme-s: 20%;
+  --theme-l: 53%;
+
+  /* ===== Theme core ===== */
+  --theme: hsl(var(--theme-h) var(--theme-s) var(--theme-l)); /* base hue and saturation, mid lightness */
+
+  /* ===== Dark mode (default) ===== */
+  --bg-dark-l:      0%;
+  --bg-l:           5%;
+  --bg-light-l:    10%;
+  --text-l:        95%;
+  --text-muted-l:  70%;
+  --border-l:      35%;
+  --highlight-l:   40%;
+  --gradient-l:    85%;
+  --shadow-l:     100%;
+
+  /* --bg-dark-l:      0%;
+  --bg-l:          10%;
+  --bg-light-l:    15%; */
+  
+  /* ===== Derived colors (dark mode default) ===== */
+  --bg-dark:    hsl(var(--theme-h) var(--theme-s) var(--bg-dark-l));
+  --bg:         hsl(var(--theme-h) var(--theme-s) var(--bg-l));
+  --bg-light:   hsl(var(--theme-h) var(--theme-s) var(--bg-light-l));
+  --bg-header:  hsl(var(--theme-h) 90%            var(--bg-dark-l));
+  --text:       hsl(var(--theme-h) var(--theme-s) var(--text-l));
+  --text-muted: hsl(var(--theme-h) var(--theme-s) var(--text-muted-l));
+  --border:     hsl(var(--theme-h) var(--theme-s) var(--border-l));
+  --highlight:  hsl(var(--theme-h) var(--theme-s) var(--highlight-l));
+
+  /* ===== Visual effects ===== */
+  --border-card:     solid 1px var(--border);
+  --gradient:        linear-gradient(0deg, var(--bg-dark) var(--gradient-l), var(--bg-light));
+  --gradient-hover:  linear-gradient(0deg, var(--bg-dark),                   var(--bg-light));
+
+  --shadow-soft: 
+        0 2px 2px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.03),
+        0 4px 4px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.07);
+  --shadow:      
+        0 2px 2px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.07),
+        0 4px 4px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.15);
+  --shadow-hard: 
+        0 2px 2px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.15),
+        0 4px 4px hsl(var(--theme-h) var(--theme-s) var(--shadow-l) / 0.3);
+
+  /* ===== Light mode overrides ===== */
+  @media (prefers-color-scheme: light) {
+    & {
+      --bg-dark-l:      90%;
+      --bg-l:           95%;
+      --bg-light-l:    100%;
+      --text-l:         25%;
+      --text-muted-l:   40%;
+      --border-l:       30%;
+      --highlight-l:   100%;
+      --gradient-l:     15%;
+      --shadow-l:        0%;
+    }
+  }
+
+  /* ===== Forced light theme ===== */
+  &[data-theme='theme-light'] {
+    --bg-dark-l:      90%;
+    --bg-l:           95%;
+    --bg-light-l:    100%;
+    --text-l:         25%;
+    --text-muted-l:   40%;
+    --border-l:       30%;
+    --highlight-l:   100%;
+    --gradient-l:     15%;
+    --shadow-l:        0%;
+  }
+
+  /* ===== Forced dark theme ===== */
+  &[data-theme='theme-dark'] {
+    --bg-dark-l:      0%;
+    --bg-l:           5%;
+    --bg-light-l:    10%;
+    --text-l:        95%;
+    --text-muted-l:  70%;
+    --border-l:      35%;
+    --highlight-l:   40%;
+    --gradient-l:    85%;
+    --shadow-l:     100%;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  color-scheme: light dark;
+  height: 100%;
+  overflow: hidden;
+}
+
+[data-theme='theme-light'] {
+  color-scheme: light;
+}
+[data-theme='theme-dark'] {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text);
+}

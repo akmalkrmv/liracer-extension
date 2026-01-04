@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "LiRace - Lichess Puzzle Collector",
+  "description": "Automates collecting unsolved puzzles on Lichess",
+  "version": "2.0.0",
+  "permissions": ["tabs", "activeTab", "storage", "sidePanel", "downloads"],
+  "host_permissions": ["https://lichess.org/*"],
+  "background": {
+    "service_worker": "background/index.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://lichess.org/racer/*"],
+      "js": ["content/content_racer.js"]
+    },
+    {
+      "matches": ["https://lichess.org/storm/*"],
+      "js": ["content/content_storm.js"]
+    },
+    {
+      "matches": ["https://lichess.org/training/*"],
+      "js": ["content/content_training.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Lichess Puzzle Collector",
+    "default_icon": {
+      "16": "assets/icons/16.png",
+      "48": "assets/icons/48.png",
+      "128": "assets/icons/128.png"
+    }
+  }
+}
