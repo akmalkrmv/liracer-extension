@@ -9,6 +9,7 @@
 
   /* ===== Other Units ===== */
   --border-radius: 0.35rem; /* 6px */
+  --border-radius-sm: 0.2rem; /* 3px */
 
   /* ===== Main color ===== */
   --main-color: hsl(221deg, 83%, 53%);
