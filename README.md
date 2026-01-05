@@ -93,7 +93,3 @@ The popup displays:
 - Quick links to navigate to specific puzzles
 - Current tab indicator to show which puzzle you're viewing
 
-## Preview
-
-![4](screenshots/dark-theme.png)
-![5](screenshots/light-theme.png)
