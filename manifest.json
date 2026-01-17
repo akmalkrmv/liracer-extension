@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LiRace - Lichess Puzzle Collector",
   "description": "Automates collecting unsolved puzzles on Lichess",
-  "version": "2.0.7",
+  "version": "2.0.32",
   "permissions": ["tabs", "activeTab", "storage", "sidePanel", "downloads"],
   "host_permissions": ["https://lichess.org/*"],
   "background": {

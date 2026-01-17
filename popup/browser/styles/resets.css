@@ -71,7 +71,7 @@
       --text-l:         25%;
       --text-muted-l:   40%;
       --border-l:       30%;
-      --highlight-l:   100%;
+      --highlight-l:    90%;
       --gradient-l:     15%;
       --shadow-l:        0%;
     }
@@ -85,7 +85,7 @@
     --text-l:         25%;
     --text-muted-l:   40%;
     --border-l:       30%;
-    --highlight-l:   100%;
+    --highlight-l:    90%;
     --gradient-l:     15%;
     --shadow-l:        0%;
   }

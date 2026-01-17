@@ -28,11 +28,23 @@ body.side-panel {
   width: 100%;
 }
 
+.flex-row {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
 footer {
   text-align: center;
   padding: var(--space-sm);
   color: var(--text-muted);
   background-color: var(--bg-light);
+}
+
+[data-has-duplicates='true'] {
+  border: 10px solid orange;
 }
 
 .card {
@@ -512,8 +524,41 @@ h3 {
 
 .button-group {
   display: flex;
-  gap: var(--space-sm);
   flex-wrap: wrap;
+  gap: 0;
+
+  & button {
+    border-radius: 0;
+    border-right: 0;
+  }
+  & button:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+  & button:last-child {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-right: var(--border-card);
+  }
+}
+
+.btn:has(mat-icon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+
+  mat-icon {
+    color: var(--text-muted);
+    color: inherit;
+  }
+
+  &.btn-sm mat-icon {
+    --mat-icon-size: 18px;
+    font-size: var(--mat-icon-size);
+    height: var(--mat-icon-size);
+    width: var(--mat-icon-size);
+  }
 }
 
 .btn {
@@ -530,8 +575,9 @@ h3 {
 
 .btn:hover {
   background-color: var(--highlight);
+  /* background-color: var(--bg); */
   color: var(--text);
-  border-color: var(--highlight);
+  /* border-color: var(--highlight); */
 }
 
 .btn.btn-sm {
@@ -561,8 +607,9 @@ h3 {
 
 .btn.active {
   background-color: var(--highlight);
+  /* background-color: var(--bg); */
   color: var(--text);
-  border-color: var(--highlight);
+  /* border-color: var(--highlight); */
 }
 
 .export-actions {
