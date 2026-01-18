@@ -1,51 +1,46 @@
-# Lichess Puzzle Racer Collector
+# LiRacer - Lichess Puzzle Tracker
 
-A Chrome extension that automates collecting unsolved puzzles from Lichess puzzle racer.
+A Chrome extension that automatically saves puzzles from Lichess Puzzle Racer and Puzzle Storm so you can review them later.
 
 ## Overview
 
-The **Lichess Puzzle Racer Collector** extension helps you efficiently track and manage puzzle races and training sessions from Lichess. It automatically collects unsolved puzzle links and provides an organized interface to manage and revisit them.
+The **Lichess Puzzles Tracker** extension helps you efficiently track and manage puzzles from racer runs and storm runs from Lichess. It automatically collects solved and unsolved puzzle links and provides an organized interface to manage, review and revisit them.
 
 This extension was inspired to help [ElyneLee](https://www.twitch.tv/elynelee) keep track of unsolved puzzles from previous puzzle racer runs, allowing for easy review and solving of those puzzles after the races.
 
-## Features
+## What It Does
 
-- 🎯 **Automatic Puzzle Collection** - Collects unsolved puzzles from Lichess puzzle modes
-- 📋 **Organized Storage** - Maintains a structured list of collected puzzle races
-- 🔗 **Quick Navigation** - Easy access to stored puzzle links
-- 📊 **Puzzle Tracking** - Keeps track of puzzle race sessions with timestamps
-- 🎮 **Multi-Mode Support** - Works with both Puzzle Racer and Puzzle Training modes
-- 🌓 **Light & Dark Theme Support** - Automatically adapts to your system theme preference
+- **Auto-saves puzzles** from Puzzle Racer and Puzzle Storm runs
+- **Groups runs by timestamp** - see today's runs, yesterday's runs, and so on for you to manage
+- **Tracks your progress and stats** - shows how many puzzles you solved, how many missed, and other stats for you to review later
+- **Marks reviewed puzzles automatically** - when you solve a failed puzzle on `lichess.org/training`, it moves to the reviewed list
+- **Shows completion status** - runs with all puzzles reviewed get marked as completed
+- **Adapts to your theme** - supports both light and dark modes
 
-## Supported Modes
+The goal: review all unsolved puzzles from your daily runs, track your progress per run and per day, and keep everything organized.
 
-- **Puzzle Racer** (`lichess.org/racer/*`)
-- **Puzzle Training** (`lichess.org/training/*`)
+## Works With
+
+- **Puzzle Racer** - [`lichess.org/racer`](https://lichess.org/racer)
+- **Puzzle Storm** - [`lichess.org/storm`](https://lichess.org/storm)
+- **Puzzle Training** - `lichess.org/training/[puzzle]` (where you review saved puzzles)
 
 ## Installation
 
-1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in the top right)
-4. Click "Load unpacked" and select this extension directory
-5. The extension icon will appear in your Chrome toolbar
+1. Download or clone this repo
+2. Go to [`chrome://extensions/`](chrome://extensions/) in Chrome
+3. Turn on "Developer mode" (top right corner)
+4. Click "Load unpacked" and select the extension folder
+5. You'll see the LiRacer icon in your toolbar
 
-## Usage
+## How to Use
 
-1. **Navigate to Lichess Puzzles**
-   - Visit `lichess.org/racer` or `lichess.org/training` in Chrome
-
-2. **Collect Puzzles**
-   - Solve puzzles as normal
-   - The extension automatically collects unsolved puzzle links
-
-3. **View Stored Puzzles**
-   - Click the extension icon in the toolbar
-   - A popup displays all collected puzzle races organized by timestamp
-
-4. **Access Puzzles**
-   - Click any puzzle link in the popup to navigate to it
-   - Links are opened in the active tab for seamless navigation
+1. Head to Lichess [`Puzzle Racer`](https://lichess.org/racer) or [`Puzzle Storm`](https://lichess.org/storm)
+2. Play normally - when your run finishes, the extension automatically saves your puzzles and your run stats (score, rank, etc.)
+3. Click the extension icon to see your saved puzzles grouped by run and day
+4. Click any unsolved puzzle link to jump to `lichess.org/training/[puzzle]`
+5. Solve the puzzle - it automatically moves to your reviewed list
+6. Keep going until all runs show as complete!
 
 ## How It Works
 
@@ -54,42 +49,28 @@ This extension was inspired to help [ElyneLee](https://www.twitch.tv/elynelee) k
 3. **Popup Interface** - Displays collected puzzles and provides navigation
 4. **Chrome Storage API** - Persists puzzle data across sessions
 
-## Permissions
 
-- `tabs` - Required to get the current active tab URL
-- `activeTab` - Allows interaction with the active tab
-- `storage` - Persists puzzle data
-- `host_permissions` - Accesses `https://lichess.org/*`
+## Permissions Explained
+
+The extension needs a few permissions to work:
+
+- **Access to lichess.org** - to detect and save puzzles during runs
+- **Storage** - to keep your puzzles saved locally in your browser (your data stays on your device)
+- **Tabs** - to open puzzle links and detect when you've solved them on the training page
+- **Downloads** - to export your puzzle stats and backups
 
 ## Browser Support
 
 - Chrome/Chromium-based browsers with Manifest V3 support (including Edge browser)
 
-## Development
-
-This extension uses Chrome Manifest V3 and Chrome Storage API. The popup displays puzzle data organized by:
-- **Solved Races** - Completed puzzle sessions
-- **Open Races** - In-progress puzzle sessions
-- Sorting by timestamp (latest first)
-
 ## License
 
-This project is provided as-is for personal use.
+Free to use for personal purposes.
 
 ## Contributing
 
-Feel free to submit issues or suggestions for improvements!
+Found a bug or have an idea? Feel free to open an issue or suggest improvements!
 
-## Popup UI
+---
 
-The extension provides a clean, organized interface for managing collected puzzles:
-
-- **Dark Theme** - Default theme with a sleek dark interface
-- **Light Theme** - Bright, eye-friendly light theme
-
-The popup displays:
-- All collected puzzle races sorted by timestamp (latest first)
-- Puzzle status badges (unsolved, reviewed, solved)
-- Quick links to navigate to specific puzzles
-- Current tab indicator to show which puzzle you're viewing
-
+Made with ♟️ for the Lichess community
