@@ -69,7 +69,8 @@ Free to use for personal purposes.
 
 ## Contributing
 
-Found a bug or have an idea? Feel free to open an issue or suggest improvements!
+Found a bug or have an idea? Feel free to open an issue or suggest improvements!  
+Want to check out the source code? visit [`https://github.com/akmalkrmv/liracer-extension-source`](https://github.com/akmalkrmv/liracer-extension-source)
 
 ---
 

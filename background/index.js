@@ -33,6 +33,140 @@
     });
   }
 
+  // src/background/storage/races.ts
+  function getRaceRuns(message, _sendResponse) {
+    chrome.storage.local.get([STORAGE_KEYS.RACES], (data) => {
+      const races = data.races || {};
+      _sendResponse(races);
+    });
+  }
+  function saveRaceInformation(message) {
+    chrome.storage.local.get([STORAGE_KEYS.RACES], (data) => {
+      const races = data.races || {};
+      races[message.raceId] = {
+        raceId: message.raceId,
+        timestamp: message.timestamp,
+        // puzzles
+        solved: message.solved || [],
+        unsolved: message.unsolved || [],
+        reviewed: message.reviewed || [],
+        // stats
+        score: message.score || 0,
+        rank: message.rank || 0,
+        totalPlayers: message.totalPlayers || 0
+      };
+      chrome.storage.local.set({ races });
+    });
+  }
+
+  // src/background/storage/storms.ts
+  function getStormRuns(message, _sendResponse) {
+    chrome.storage.local.get([STORAGE_KEYS.STORMS], (data) => {
+      const storms = data.races || {};
+      _sendResponse(storms);
+    });
+  }
+  function saveStormInformation(message) {
+    chrome.storage.local.get([STORAGE_KEYS.STORMS], (data) => {
+      const storms = data.storms || {};
+      storms[message.stormId] = {
+        stormId: message.stormId,
+        timestamp: message.timestamp,
+        // puzzles
+        solved: message.solved || [],
+        unsolved: message.unsolved || [],
+        reviewed: message.reviewed || [],
+        // stats
+        score: message.score || 0,
+        moves: message.moves || 0,
+        accuracy: message.accuracy || 0,
+        combo: message.combo || 0,
+        time: message.time || 0,
+        timePerMove: message.timePerMove || 0,
+        highestSolved: message.highestSolved || 0
+      };
+      chrome.storage.local.set({ storms });
+    });
+  }
+
+  // src/background/storage/puzzles.ts
+  function updatePuzzleStateToReviewed(message) {
+    const puzzleId = message.id;
+    chrome.storage.local.get([STORAGE_KEYS.RACES, STORAGE_KEYS.STORMS, STORAGE_KEYS.TRAINING], (data) => {
+      const races = data.races || {};
+      const storms = data.storms || {};
+      const training = data.training || {};
+      const storageUpdate = {
+        races: movePuzzleToReviewed(races, puzzleId),
+        storms: movePuzzleToReviewed(storms, puzzleId),
+        training: removePuzzleFromTraining(training, puzzleId)
+      };
+      setTimeout(() => chrome.storage.local.set(storageUpdate), 50);
+    });
+  }
+  function movePuzzleToReviewed(runs, puzzleId) {
+    const updatedRuns = {};
+    for (const runId in runs) {
+      const run = runs[runId];
+      const puzzleIndex = run.unsolved.findIndex((url) => url.endsWith("/" + puzzleId) || url === puzzleId);
+      if (puzzleIndex !== -1) {
+        const puzzleUrl = run.unsolved[puzzleIndex];
+        updatedRuns[runId] = {
+          ...run,
+          unsolved: run.unsolved.filter((_, index) => index !== puzzleIndex),
+          reviewed: [...run.reviewed, puzzleUrl]
+        };
+      } else {
+        updatedRuns[runId] = run;
+      }
+    }
+    return updatedRuns;
+  }
+  function removePuzzleFromTraining(training, puzzleId) {
+    if (!training?.puzzles?.length) {
+      return null;
+    }
+    const filtered = training.puzzles.map((link) => link.split("/").pop()).filter((id) => id !== void 0 && id !== puzzleId);
+    return filtered.length > 0 ? { ...training, puzzles: filtered } : null;
+  }
+
+  // src/background/utils.ts
+  function debug_script(message) {
+    chrome.storage.local.set({ debug_content: message.text });
+    return;
+  }
+  function closeTab(sender) {
+    if (sender.tab && sender.tab.id) {
+      chrome.tabs.remove(sender.tab.id);
+    }
+  }
+  function replacePuzzleFullPathsWithOnlyPuzzleIds() {
+    const extractLastSegment = (href) => href.split("/").pop();
+    chrome.storage.local.get([STORAGE_KEYS.RACES, STORAGE_KEYS.STORMS], (data) => {
+      const races = data.races || {};
+      const storms = data.storms || {};
+      for (const raceId in races) {
+        const race = races[raceId];
+        races[raceId] = {
+          ...race,
+          solved: race.solved.map(extractLastSegment),
+          unsolved: race.unsolved.map(extractLastSegment),
+          reviewed: race.reviewed.map(extractLastSegment)
+        };
+      }
+      for (const stormId in storms) {
+        const storm = storms[stormId];
+        storms[stormId] = {
+          ...storm,
+          solved: storm.solved.map(extractLastSegment),
+          unsolved: storm.unsolved.map(extractLastSegment),
+          reviewed: storm.reviewed.map(extractLastSegment)
+        };
+      }
+      chrome.storage.local.set({ races, storms, debug_content: storms.length });
+    });
+  }
+
   // src/background/index.ts
   (function() {
     initializeViewMode();
@@ -70,123 +204,5 @@
           break;
       }
     });
-    function getRaceRuns(message, _sendResponse) {
-      chrome.storage.local.get([STORAGE_KEYS.RACES], (data) => {
-        const races = data.races || {};
-        _sendResponse(races);
-      });
-    }
-    function saveRaceInformation(message) {
-      chrome.storage.local.get([STORAGE_KEYS.RACES], (data) => {
-        const races = data.races || {};
-        races[message.raceId] = {
-          raceId: message.raceId,
-          timestamp: message.timestamp,
-          // puzzles
-          solved: message.solved || [],
-          unsolved: message.unsolved || [],
-          reviewed: message.reviewed || [],
-          // stats
-          score: message.score || 0,
-          rank: message.rank || 0,
-          totalPlayers: message.totalPlayers || 0
-        };
-        chrome.storage.local.set({ races });
-      });
-    }
-    function getStormRuns(message, _sendResponse) {
-      chrome.storage.local.get([STORAGE_KEYS.STORMS], (data) => {
-        const storms = data.races || {};
-        _sendResponse(storms);
-      });
-    }
-    function saveStormInformation(message) {
-      chrome.storage.local.get([STORAGE_KEYS.STORMS], (data) => {
-        const storms = data.storms || {};
-        storms[message.stormId] = {
-          stormId: message.stormId,
-          timestamp: message.timestamp,
-          // puzzles
-          solved: message.solved || [],
-          unsolved: message.unsolved || [],
-          reviewed: message.reviewed || [],
-          // stats
-          score: message.score || 0,
-          moves: message.moves || 0,
-          accuracy: message.accuracy || 0,
-          combo: message.combo || 0,
-          time: message.time || 0,
-          timePerMove: message.timePerMove || 0,
-          highestSolved: message.highestSolved || 0
-        };
-        chrome.storage.local.set({ storms });
-      });
-    }
-    function updatePuzzleStateToReviewed(message) {
-      const puzzleId = message.id;
-      chrome.storage.local.get([STORAGE_KEYS.RACES, STORAGE_KEYS.STORMS], (data) => {
-        const races = data.races || {};
-        const storms = data.storms || {};
-        for (const raceId in races) {
-          const race = races[raceId];
-          const puzzleIndex = race.unsolved.findIndex((url) => url.endsWith("/" + puzzleId) || url === puzzleId);
-          if (puzzleIndex !== -1) {
-            const puzzleUrl = race.unsolved[puzzleIndex];
-            race.unsolved.splice(puzzleIndex, 1);
-            race.reviewed.push(puzzleUrl);
-            setTimeout(() => chrome.storage.local.set({ races: { ...races } }), 50);
-            chrome.runtime.sendMessage({ type: "races_updated" /* races_updated */ });
-            return;
-          }
-        }
-        for (const stormId in storms) {
-          const storm = storms[stormId];
-          const puzzleIndex = storm.unsolved.findIndex((url) => url.endsWith("/" + puzzleId) || url === puzzleId);
-          if (puzzleIndex !== -1) {
-            const puzzleUrl = storm.unsolved[puzzleIndex];
-            storm.unsolved.splice(puzzleIndex, 1);
-            storm.reviewed.push(puzzleUrl);
-            setTimeout(() => chrome.storage.local.set({ storms: { ...storms } }), 50);
-            chrome.runtime.sendMessage({ type: "storms_updated" /* storms_updated */ });
-            return;
-          }
-        }
-      });
-    }
-    function debug_script(message) {
-      chrome.storage.local.set({ debug_content: message.text });
-      return;
-    }
-    function closeTab(sender) {
-      if (sender.tab && sender.tab.id) {
-        chrome.tabs.remove(sender.tab.id);
-      }
-    }
-    function replacePuzzleFullPathsWithOnlyPuzzleIds() {
-      const extractLastSegment = (href) => href.split("/").pop();
-      chrome.storage.local.get([STORAGE_KEYS.RACES, STORAGE_KEYS.STORMS], (data) => {
-        const races = data.races || {};
-        const storms = data.storms || {};
-        for (const raceId in races) {
-          const race = races[raceId];
-          races[raceId] = {
-            ...race,
-            solved: race.solved.map(extractLastSegment),
-            unsolved: race.unsolved.map(extractLastSegment),
-            reviewed: race.reviewed.map(extractLastSegment)
-          };
-        }
-        for (const stormId in storms) {
-          const storm = storms[stormId];
-          storms[stormId] = {
-            ...storm,
-            solved: storm.solved.map(extractLastSegment),
-            unsolved: storm.unsolved.map(extractLastSegment),
-            reviewed: storm.reviewed.map(extractLastSegment)
-          };
-        }
-        chrome.storage.local.set({ races, storms, debug_content: storms.length });
-      });
-    }
   })();
 })();

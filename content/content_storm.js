@@ -58,7 +58,7 @@
     const getText = (selector) => document.querySelector(selector)?.textContent || void 0;
     const getLinks = (selector) => [...document.querySelectorAll(selector)].map((a) => a.href);
     const extractStats = () => [...document.querySelectorAll(SELECTORS.stats)].map((el) => Number(el.textContent || 0));
-    const extractLastSegment = (href) => href.split("/").pop();
+    const extractLastSegment = (href) => href.split("/").filter(Boolean).pop();
     function collectPuzzles() {
       const solved = getLinks(SELECTORS.solvedRounds).map(extractLastSegment);
       const unsolved = getLinks(SELECTORS.unsolvedRounds).map(extractLastSegment);
