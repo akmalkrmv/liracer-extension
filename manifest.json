@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LiRacer - Lichess Puzzle Tracker",
   "description": "Automates collecting unsolved puzzles on Lichess",
-  "version": "2.0.48",
+  "version": "2.0.49",
   "permissions": ["tabs", "activeTab", "storage", "sidePanel", "downloads"],
   "host_permissions": ["https://lichess.org/*"],
   "background": {
